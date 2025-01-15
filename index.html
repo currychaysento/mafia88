@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #34495e;
+            background-color: #2c3e50;
             color: white;
             text-align: center;
             padding: 20px;
@@ -30,7 +30,7 @@
         .bet-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 10px;
             margin-bottom: 20px;
         }
 
@@ -42,10 +42,11 @@
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .bet span {
-            font-size: 16px;
+            font-size: 14px;
             color: yellow;
             position: absolute;
             bottom: 5px;
@@ -55,6 +56,23 @@
         .bet.placed {
             border-color: yellow;
             box-shadow: 0 0 10px yellow;
+        }
+
+        .bet.correct {
+            animation: blink 0.5s infinite;
+        }
+
+        .bet.stop-blink {
+            animation: none;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                background: rgba(46, 204, 113, 0.5);
+            }
+            50% {
+                background: rgba(46, 204, 113, 1);
+            }
         }
 
         button {
@@ -69,7 +87,7 @@
         }
 
         button:hover {
-            background-color: #c039b2;
+            background-color: #c0392b;
         }
 
         input {
@@ -81,26 +99,37 @@
             border: 1px solid #ccc;
         }
 
-        .result, .history, .streak {
+        .result {
             margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .timer {
+            margin-top: 10px;
             font-size: 16px;
+            color: #f1c40f;
         }
 
-        .history ul {
-            list-style-type: none;
-            padding: 0;
+        .history {
+            margin-top: 20px;
         }
 
-        .history li {
-            padding: 5px 0;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            color: white;
         }
 
-        .win {
-            color: green;
+        th, td {
+            border: 1px solid white;
+            padding: 8px;
+            text-align: center;
         }
 
-        .loss {
-            color: red;
+        th {
+            background-color: #34495e;
         }
     </style>
 </head>
@@ -114,36 +143,49 @@
         <input type="number" id="betAmount" min="1" value="100">
 
         <div class="bet-container">
-            <div class="bet" id="bau" style="background-color: #2ecc71;" onclick="placeBet('bau')">🍐 Bầu <span id="bauBet">0</span></div>
-            <div class="bet" id="cua" style="background-color: #e74c3c;" onclick="placeBet('cua')">🦀 Cua <span id="cuaBet">0</span></div>
-            <div class="bet" id="tom" style="background-color: #f1c40f;" onclick="placeBet('tom')">🦐 Tôm <span id="tomBet">0</span></div>
-            <div class="bet" id="ca" style="background-color: #3498db;" onclick="placeBet('ca')">🐟 Cá <span id="caBet">0</span></div>
-            <div class="bet" id="nai" style="background-color: #9b59b6;" onclick="placeBet('nai')">🦌 Nai <span id="naiBet">0</span></div>
-            <div class="bet" id="ga" style="background-color: #e67e22;" onclick="placeBet('ga')">🐓 Gà <span id="gaBet">0</span></div>
+            <div class="bet" id="bau" onclick="placeBet('bau')">🍐 Bầu <span id="bauBet">0</span></div>
+            <div class="bet" id="cua" onclick="placeBet('cua')">🦀 Cua <span id="cuaBet">0</span></div>
+            <div class="bet" id="tom" onclick="placeBet('tom')">🦐 Tôm <span id="tomBet">0</span></div>
+            <div class="bet" id="ca" onclick="placeBet('ca')">🐟 Cá <span id="caBet">0</span></div>
+            <div class="bet" id="nai" onclick="placeBet('nai')">🦌 Nai <span id="naiBet">0</span></div>
+            <div class="bet" id="ga" onclick="placeBet('ga')">🐓 Gà <span id="gaBet">0</span></div>
         </div>
 
         <button onclick="playGame()">🎲 Quay Xúc Xắc</button>
 
         <div class="result" id="result"></div>
+        <div class="timer" id="timer"></div>
+
         <div class="history">
-            <h3>Lịch sử kết quả</h3>
-            <ul id="historyList"></ul>
-        </div>
-        <div class="streak">
-            <h3>Chuỗi thắng/thua:</h3>
-            <div id="streak">Chưa có chuỗi.</div>
+            <h3>Lịch sử cược</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Kết quả</th>
+                        <th>Trạng thái</th>
+                        <th>Tiền thắng</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTable"></tbody>
+            </table>
         </div>
     </div>
 
     <script>
         let balance = 1000;
-        let bets = { bau: 0, cua: 0, tom: 0, ca: 0, nai: 0, ga: 0 };
-        let gameHistory = [];
-        let currentStreak = 0;
-        let lastResult = "";
+        let bets = {
+            bau: 0,
+            cua: 0,
+            tom: 0,
+            ca: 0,
+            nai: 0,
+            ga: 0
+        };
+        let historyCount = 0;
 
         function placeBet(choice) {
-            let betAmount = parseInt(document.getElementById("betAmount").value);
+            const betAmount = parseInt(document.getElementById("betAmount").value);
             if (betAmount > balance || betAmount <= 0) {
                 alert("Số tiền cược không hợp lệ!");
                 return;
@@ -153,44 +195,85 @@
             balance -= betAmount;
 
             document.getElementById("balance").textContent = balance;
-            document.getElementById(choice + "Bet").textContent = bets[choice] + " ✅";
+            document.getElementById(choice + "Bet").textContent = bets[choice];
             document.getElementById(choice).classList.add("placed");
         }
 
-        function calculateWinLoss(result) {
-            let totalWin = 0;
-            let totalBet = Object.values(bets).reduce((sum, bet) => sum + bet, 0);
-
-            result.forEach(outcome => {
-                if (bets[outcome] > 0) {
-                    totalWin += bets[outcome] * 2;
-                }
-            });
-
-            return { totalWin, totalBet };
+        function playGame() {
+        if (Object.values(bets).every(value => value === 0)) {
+            alert("Bạn chưa đặt cược!");
+            return;
         }
 
-        function playGame() {
-            if (Object.values(bets).every(value => value === 0)) {
-                alert("Bạn chưa đặt cược!");
-                return;
+        const options = ["bau", "cua", "tom", "ca", "nai", "ga"];
+        const winChance = 40; // Tỷ lệ thắng (40%)
+
+        let result = [];
+        const isWin = Math.random() * 100 < winChance; // Xác định người chơi thắng hay thua
+
+        if (isWin) {
+            // Người chơi thắng: Chọn kết quả từ các ô đã đặt cược
+            const placedBets = Object.keys(bets).filter(key => bets[key] > 0);
+            for (let i = 0; i < 3; i++) {
+                result.push(placedBets[Math.floor(Math.random() * placedBets.length)]);
             }
+        } else {
+            // Người chơi thua: Chọn kết quả ngẫu nhiên
+            for (let i = 0; i < 3; i++) {
+                result.push(options[Math.floor(Math.random() * options.length)]);
+            }
+        }
 
-            const options = ["bau", "cua", "tom", "ca", "nai", "ga"];
-            const result = [options[Math.floor(Math.random() * 6)], options[Math.floor(Math.random() * 6)], options[Math.floor(Math.random() * 6)]];
-            let { totalWin, totalBet } = calculateWinLoss(result);
+        let winnings = 0;
+        result.forEach(res => {
+            if (bets[res] > 0) {
+                winnings += bets[res] * 2;
+                document.getElementById(res).classList.add("correct");
+            }
+        });
 
-            balance += totalWin;
-            document.getElementById("balance").textContent = balance;
+        balance += winnings;
+        document.getElementById("balance").textContent = balance;
 
-            let winOrLoss = totalWin > 0 ? "Thắng" : "Thua";
-            let resultText = `Kết quả: ${result.join(" ")} - ${winOrLoss} ${Math.abs(totalWin - totalBet)} VNĐ!`;
-            document.getElementById("result").textContent = resultText;
+        historyCount++;
+        const outcome = winnings > 0 ? "Thắng" : "Thua";
+        document.getElementById("result").textContent = `Kết quả: ${result.join(", ")} - ${outcome}!`;
+        
+        // Cập nhật lịch sử cược, thêm vào đầu bảng
+        const row = `<tr>
+            <td>${historyCount}</td>
+            <td>${result.join(", ")}</td>
+            <td>${outcome}</td>
+            <td>${winnings}</td>
+        </tr>`;
+        document.getElementById("historyTable").innerHTML = row + document.getElementById("historyTable").innerHTML;
 
-            let historyItem = `<li class="${winOrLoss === 'Thắng' ? 'win' : 'loss'}">${resultText}</li>`;
-            document.getElementById("historyList").innerHTML += historyItem;
+        // Countdown để reset game
+        let countdown = 5;
+        document.getElementById("timer").textContent = `Đặt cược mới trong ${countdown} giây...`;
+        const interval = setInterval(() => {
+            countdown--;
+            document.getElementById("timer").textContent = `Đặt cược mới trong ${countdown} giây...`;
+            if (countdown === 0) {
+                clearInterval(interval);
+                resetGame(result);
+            }
+        }, 1000);
+    }
+
+        function resetGame(result) {
+            result.forEach(res => {
+                document.getElementById(res).classList.remove("correct");
+                document.getElementById(res).classList.add("stop-blink");
+            });
 
             bets = { bau: 0, cua: 0, tom: 0, ca: 0, nai: 0, ga: 0 };
+            document.querySelectorAll(".bet span").forEach(span => span.textContent = "0");
+            document.querySelectorAll(".bet").forEach(bet => {
+                bet.classList.remove("placed", "stop-blink");
+            });
+
+            document.getElementById("timer").textContent = "Bạn có thể đặt cược!";
         }
     </script>
 
