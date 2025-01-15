@@ -146,20 +146,14 @@
             animation: fall linear infinite;
         }
 
-        .cherry-blossom { background: pink; }
-        .apricot-blossom { background: yellow; 
+        .cherry-blossom {
+            background: pink;
         }
-    
-    @keyframes explode {
-      0% {
-        transform: scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(5);
-        opacity: 0;
-      }
-    }
+
+        .apricot-blossom {
+            background: yellow;
+        }
+        
     </style>
 </head>
 <body>
@@ -355,43 +349,7 @@
         }
         
         setInterval(createPetal, 150);
-        * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      background-color: #000;
-      overflow: hidden;
-    }
-    
-    .firework-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-    
-    .firework {
-      position: absolute;
-      border-radius: 50%;
-      opacity: 0;
-      pointer-events: none;
-      animation: explode 1s forwards;
-    }
-    
-    @keyframes explode {
-      0% {
-        transform: scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(5);
-        opacity: 0;
-      }
-    }
+       
 
     </script>
 
