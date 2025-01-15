@@ -112,6 +112,15 @@
             font-size: 16px;
             color: #3498db;
         }
+
+        .skip-btn {
+            background-color: #f39c12;
+            margin-top: 20px;
+        }
+
+        .skip-btn:hover {
+            background-color: #e67e22;
+        }
     </style>
 </head>
 <body>
@@ -133,6 +142,7 @@
         </div>
 
         <button onclick="playGame()">🎲 Quay Xúc Xắc</button>
+        <button class="skip-btn" onclick="skipGame()">⏭ Bỏ qua và Đặt cược lại</button>
 
         <div class="result" id="result"></div>
         <div class="timer" id="timer"></div>
@@ -163,6 +173,7 @@
         let gameHistory = []; // Lưu lịch sử thắng thua
         let currentStreak = 0; // Cầu thắng thua
         let lastResult = ""; // Lưu kết quả thắng thua trước đó
+        let countdownTimer = null;
 
         function placeBet(choice) {
             let betAmount = parseInt(document.getElementById("betAmount").value);
@@ -226,33 +237,40 @@
             let countdown = 5;
             document.getElementById("timer").textContent = `Vui lòng đợi ${countdown} giây để đặt cược mới...`;
 
-            let timer = setInterval(() => {
+            countdownTimer = setInterval(() => {
                 countdown--;
                 document.getElementById("timer").textContent = `Vui lòng đợi ${countdown} giây để đặt cược mới...`;
 
                 if (countdown === 0) {
-                    clearInterval(timer);
-
-                    // Reset bets
-                    bets = {
-                        bau: 0,
-                        cua: 0,
-                        tom: 0,
-                        ca: 0,
-                        nai: 0,
-                        ga: 0
-                    };
-
-                    document.querySelectorAll(".bet span").forEach(span => span.textContent = "0");
-                    document.querySelectorAll(".bet").forEach(btn => {
-                        btn.style.pointerEvents = "auto";
-                        btn.classList.remove("placed");
-                    });
-
-                    document.getElementById("result").textContent = "Hãy đặt cược để chơi tiếp!";
-                    document.getElementById("timer").textContent = "";
+                    clearInterval(countdownTimer);
+                    resetBets();
                 }
             }, 1000);
+        }
+
+        function skipGame() {
+            clearInterval(countdownTimer);  // Clear the countdown timer
+            resetBets();  // Reset the bets immediately
+        }
+
+        function resetBets() {
+            bets = {
+                bau: 0,
+                cua: 0,
+                tom: 0,
+                ca: 0,
+                nai: 0,
+                ga: 0
+            };
+
+            document.querySelectorAll(".bet span").forEach(span => span.textContent = "0");
+            document.querySelectorAll(".bet").forEach(btn => {
+                btn.style.pointerEvents = "auto";
+                btn.classList.remove("placed");
+            });
+
+            document.getElementById("result").textContent = "Hãy đặt cược để chơi tiếp!";
+            document.getElementById("timer").textContent = "";
         }
 
         function updateHistory() {
@@ -263,24 +281,4 @@
             } else {
                 gameHistory.slice(0, 5).forEach(game => {
                     const historyItem = document.createElement("li");
-                    historyItem.textContent = `Kết quả: ${game.result.map(r => r).join(" ")} - Thắng: ${game.winnings > 0 ? game.winnings + " VNĐ" : "Thua"}`;
-                    historyList.appendChild(historyItem);
-                });
-            }
-        }
-
-        function updateStreak(won) {
-            if (won) {
-                currentStreak++;
-                lastResult = "Thắng";
-            } else {
-                currentStreak = 0;
-                lastResult = "Thua";
-            }
-
-            document.getElementById("streak").textContent = `Cầu: ${lastResult} - Chuỗi thắng thua: ${currentStreak}`;
-        }
-    </script>
-
-</body>
-</html>
+                    historyItem
