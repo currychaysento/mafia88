@@ -57,6 +57,17 @@
             box-shadow: 0 0 10px yellow;
         }
 
+        /* New CSS for blinking effect */
+        .blink {
+            animation: blinkAnimation 1s infinite;
+        }
+
+        @keyframes blinkAnimation {
+            50% {
+                opacity: 0;
+            }
+        }
+
         button {
             background-color: #e74c3c;
             color: white;
@@ -221,6 +232,9 @@
             // Cập nhật cầu (chuỗi thắng thua)
             updateStreak(winnings > 0);
 
+            // Show blinking effect for correct bets
+            highlightCorrectBets(result);
+
             // Disable betting and show countdown timer
             document.querySelectorAll(".bet").forEach(btn => btn.style.pointerEvents = "none");
             let countdown = 5;
@@ -246,13 +260,21 @@
                     document.querySelectorAll(".bet span").forEach(span => span.textContent = "0");
                     document.querySelectorAll(".bet").forEach(btn => {
                         btn.style.pointerEvents = "auto";
-                        btn.classList.remove("placed");
+                        btn.classList.remove("placed", "blink");
                     });
 
                     document.getElementById("result").textContent = "Hãy đặt cược để chơi tiếp!";
                     document.getElementById("timer").textContent = "";
                 }
             }, 1000);
+        }
+
+        function highlightCorrectBets(result) {
+            result.forEach(item => {
+                if (bets[item] > 0) {
+                    document.getElementById(item).classList.add("blink");
+                }
+            });
         }
 
         function updateHistory() {
