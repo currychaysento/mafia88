@@ -152,7 +152,7 @@
         </div>
 
         <button onclick="playGame()">🎲 Quay Xúc Xắc</button>
-
+₫
         <div class="result" id="result"></div>
         <div class="timer" id="timer"></div>
 
@@ -206,10 +206,10 @@
             }
 
             const options = ["bau", "cua", "tom", "ca", "nai", "ga"];
-            const winChance = 40; // Tỷ lệ thắng (40%)
+            const winChance = 30; // Tỷ lệ thắng (30%)
 
             let result = [];
-            const isWin = Math.random() * 100 < winChance; // Xác định người chơi thắng hay thua
+            const isWin = Math.random() * 80 < winChance; // Xác định người chơi thắng hay thua
 
             if (isWin) {
                 // Người chơi thắng: Chọn kết quả từ các ô đã đặt cược
