@@ -57,7 +57,6 @@
             box-shadow: 0 0 10px yellow;
         }
 
-        /* New CSS for blinking effect */
         .blink {
             animation: blinkAnimation 1s infinite;
         }
@@ -92,20 +91,8 @@
             border: 1px solid #ccc;
         }
 
-        .result {
+        .result, .timer, .streak, .history {
             margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .timer {
-            margin-top: 10px;
-            font-size: 16px;
-            color: #f1c40f;
-        }
-
-        .history {
-            margin-top: 30px;
             font-size: 16px;
         }
 
@@ -116,12 +103,6 @@
 
         .history li {
             padding: 5px 0;
-        }
-
-        .streak {
-            margin-top: 10px;
-            font-size: 16px;
-            color: #3498db;
         }
     </style>
 </head>
@@ -146,34 +127,24 @@
         <button onclick="playGame()">🎲 Quay Xúc Xắc</button>
 
         <div class="result" id="result"></div>
-        <div class="timer" id="timer"></div>
-
         <div class="history">
             <h3>Lịch sử kết quả</h3>
             <ul id="historyList">
                 <li>Chưa có kết quả.</li>
             </ul>
         </div>
-
         <div class="streak">
-            <h3>Cầu (Chuỗi thắng/thua):</h3>
+            <h3>Cầu thắng/thua:</h3>
             <div id="streak">Chưa có chuỗi.</div>
         </div>
     </div>
 
     <script>
         let balance = 1000;
-        let bets = {
-            bau: 0,
-            cua: 0,
-            tom: 0,
-            ca: 0,
-            nai: 0,
-            ga: 0
-        };
-        let gameHistory = []; // Lưu lịch sử thắng thua
-        let currentStreak = 0; // Cầu thắng thua
-        let lastResult = ""; // Lưu kết quả thắng thua trước đó
+        let bets = { bau: 0, cua: 0, tom: 0, ca: 0, nai: 0, ga: 0 };
+        let gameHistory = [];
+        let currentStreak = 0;
+        let lastResult = "";
 
         function placeBet(choice) {
             let betAmount = parseInt(document.getElementById("betAmount").value);
@@ -186,12 +157,21 @@
             balance -= betAmount;
 
             document.getElementById("balance").textContent = balance;
+            document.getElementById(choice + "Bet").textContent = bets[choice] + " ✅";
+            document.getElementById(choice).classList.add("placed");
+        }
 
-            let betElement = document.getElementById(choice);
-            let betSpan = document.getElementById(choice + "Bet");
+        function calculateWinLoss(result) {
+            let totalWin = 0;
+            let totalBet = Object.values(bets).reduce((sum, bet) => sum + bet, 0);
 
-            betSpan.textContent = bets[choice] + " ✅";
-            betElement.classList.add("placed");
+            result.forEach(outcome => {
+                if (bets[outcome] > 0) {
+                    totalWin += bets[outcome] * 2;
+                }
+            });
+
+            return totalWin > 0 ? { type: "win", amount: totalWin } : { type: "loss", amount: totalBet };
         }
 
         function playGame() {
@@ -200,108 +180,15 @@
                 return;
             }
 
-            // Randomly select 3 results
             const options = ["bau", "cua", "tom", "ca", "nai", "ga"];
-            const icons = {
-                bau: "🍐",
-                cua: "🦀",
-                tom: "🦐",
-                ca: "🐟",
-                nai: "🦌",
-                ga: "🐓"
-            };
+            const result = [options[Math.floor(Math.random() * 6)], options[Math.floor(Math.random() * 6)], options[Math.floor(Math.random() * 6)]];
+            let gameResult = calculateWinLoss(result);
 
-            const result = [
-                options[Math.floor(Math.random() * options.length)],
-                options[Math.floor(Math.random() * options.length)],
-                options[Math.floor(Math.random() * options.length)]
-            ];
-
-            // Calculate winnings
-            let winnings = result.reduce((total, res) => total + (bets[res] * 2), 0);
-            balance += winnings;
-
-            // Cập nhật kết quả
+            balance += gameResult.type === "win" ? gameResult.amount : 0;
             document.getElementById("balance").textContent = balance;
-            document.getElementById("result").textContent = `Kết quả: ${result.map(r => icons[r]).join(" ")} \nBạn đã ${winnings > 0 ? "thắng " + winnings + " VNĐ!" : "thua!"}`;
+            document.getElementById("result").textContent = `Kết quả: ${result.join(" ")} - ${gameResult.type === "win" ? "Thắng" : "Thua"} ${gameResult.amount} VNĐ!`;
 
-            // Lưu lịch sử
-            gameHistory.unshift({ result: result, winnings: winnings });
-            updateHistory();
-
-            // Cập nhật cầu (chuỗi thắng thua)
-            updateStreak(winnings > 0);
-
-            // Show blinking effect for correct bets
-            highlightCorrectBets(result);
-
-            // Disable betting and show countdown timer
-            document.querySelectorAll(".bet").forEach(btn => btn.style.pointerEvents = "none");
-            let countdown = 5;
-            document.getElementById("timer").textContent = `Vui lòng đợi ${countdown} giây để đặt cược mới...`;
-
-            let timer = setInterval(() => {
-                countdown--;
-                document.getElementById("timer").textContent = `Vui lòng đợi ${countdown} giây để đặt cược mới...`;
-
-                if (countdown === 0) {
-                    clearInterval(timer);
-
-                    // Reset bets
-                    bets = {
-                        bau: 0,
-                        cua: 0,
-                        tom: 0,
-                        ca: 0,
-                        nai: 0,
-                        ga: 0
-                    };
-
-                    document.querySelectorAll(".bet span").forEach(span => span.textContent = "0");
-                    document.querySelectorAll(".bet").forEach(btn => {
-                        btn.style.pointerEvents = "auto";
-                        btn.classList.remove("placed", "blink");
-                    });
-
-                    document.getElementById("result").textContent = "Hãy đặt cược để chơi tiếp!";
-                    document.getElementById("timer").textContent = "";
-                }
-            }, 1000);
-        }
-
-        function highlightCorrectBets(result) {
-            result.forEach(item => {
-                if (bets[item] > 0) {
-                    document.getElementById(item).classList.add("blink");
-                }
-            });
-        }
-
-        function updateHistory() {
-            const historyList = document.getElementById("historyList");
-            historyList.innerHTML = ''; // Clear current history
-            if (gameHistory.length === 0) {
-                historyList.innerHTML = '<li>Chưa có kết quả.</li>';
-            } else {
-                gameHistory.slice(0, 5).forEach(game => {
-                    const historyItem = document.createElement("li");
-                    historyItem.textContent = `Kết quả: ${game.result.map(r => r).join(" ")} - ${game.winnings > 0 ? : "Thắng"  " + game.winnings + " VNĐ" : ""}`;
-                    historyItem.textContent = `Kết quả: ${game.result.map(r => r).join(" ")} - ${game.winnings > 0 ? ":" + game.winnings + " VNĐ" : "Thua"}`;
-                    historyList.appendChild(historyItem);
-                });
-            }
-        }
-
-        function updateStreak(won) {
-            if (won) {
-                currentStreak++;
-                lastResult = "Thắng";
-            } else {
-                currentStreak = 0;
-                lastResult = "Thua";
-            }
-
-            document.getElementById("streak").textContent = `Cầu: ${lastResult} - Chuỗi thắng thua: ${currentStreak}`;
+            bets = { bau: 0, cua: 0, tom: 0, ca: 0, nai: 0, ga: 0 };
         }
     </script>
 
