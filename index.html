@@ -57,16 +57,6 @@
             box-shadow: 0 0 10px yellow;
         }
 
-        .blink {
-            animation: blinkAnimation 1s infinite;
-        }
-
-        @keyframes blinkAnimation {
-            50% {
-                opacity: 0;
-            }
-        }
-
         button {
             background-color: #e74c3c;
             color: white;
@@ -79,7 +69,7 @@
         }
 
         button:hover {
-            background-color: #c0392b;
+            background-color: #c039b2;
         }
 
         input {
@@ -91,7 +81,7 @@
             border: 1px solid #ccc;
         }
 
-        .result, .timer, .streak, .history {
+        .result, .history, .streak {
             margin-top: 20px;
             font-size: 16px;
         }
@@ -103,6 +93,14 @@
 
         .history li {
             padding: 5px 0;
+        }
+
+        .win {
+            color: green;
+        }
+
+        .loss {
+            color: red;
         }
     </style>
 </head>
@@ -129,12 +127,10 @@
         <div class="result" id="result"></div>
         <div class="history">
             <h3>Lịch sử kết quả</h3>
-            <ul id="historyList">
-                <li>Chưa có kết quả.</li>
-            </ul>
+            <ul id="historyList"></ul>
         </div>
         <div class="streak">
-            <h3>Cầu thắng/thua:</h3>
+            <h3>Chuỗi thắng/thua:</h3>
             <div id="streak">Chưa có chuỗi.</div>
         </div>
     </div>
@@ -171,7 +167,7 @@
                 }
             });
 
-            return totalWin > 0 ? { type: "win", amount: totalWin } : { type: "loss", amount: totalBet };
+            return { totalWin, totalBet };
         }
 
         function playGame() {
@@ -182,11 +178,17 @@
 
             const options = ["bau", "cua", "tom", "ca", "nai", "ga"];
             const result = [options[Math.floor(Math.random() * 6)], options[Math.floor(Math.random() * 6)], options[Math.floor(Math.random() * 6)]];
-            let gameResult = calculateWinLoss(result);
+            let { totalWin, totalBet } = calculateWinLoss(result);
 
-            balance += gameResult.type === "win" ? gameResult.amount : 0;
+            balance += totalWin;
             document.getElementById("balance").textContent = balance;
-            document.getElementById("result").textContent = `Kết quả: ${result.join(" ")} - ${gameResult.type === "win" ? "Thắng" : "Thua"} ${gameResult.amount} VNĐ!`;
+
+            let winOrLoss = totalWin > 0 ? "Thắng" : "Thua";
+            let resultText = `Kết quả: ${result.join(" ")} - ${winOrLoss} ${Math.abs(totalWin - totalBet)} VNĐ!`;
+            document.getElementById("result").textContent = resultText;
+
+            let historyItem = `<li class="${winOrLoss === 'Thắng' ? 'win' : 'loss'}">${resultText}</li>`;
+            document.getElementById("historyList").innerHTML += historyItem;
 
             bets = { bau: 0, cua: 0, tom: 0, ca: 0, nai: 0, ga: 0 };
         }
