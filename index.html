@@ -285,8 +285,8 @@
             } else {
                 gameHistory.slice(0, 5).forEach(game => {
                     const historyItem = document.createElement("li");
-                    historyItem.textContent = `Kết quả: ${game.result.map(r => r).join(" ")} - ${game.winnings > 0 ? ": " + game.winnings + " VNĐ" : "Thua"}`;
-
+                    historyItem.textContent = `Kết quả: ${game.result.map(r => r).join(" ")} - ${game.winnings > 0 ? ": Thắng  " + game.winnings + " VNĐ" : ""}`;
+                    historyItem.textContent = `Kết quả: ${game.result.map(r => r).join(" ")} - ${game.winnings > 0 ? ":" + game.winnings + " VNĐ" : "Thua"}`;
                     historyList.appendChild(historyItem);
                 });
             }
