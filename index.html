@@ -194,78 +194,114 @@
             betElement.classList.add("placed");
         }
 
-    function playGame() {
-    if (Object.values(bets).every(value => value === 0)) {
-        alert("Bạn chưa đặt cược!");
-        return;
-    }
+        function playGame() {
+            if (Object.values(bets).every(value => value === 0)) {
+                alert("Bạn chưa đặt cược!");
+                return;
+            }
 
-    // Randomly select 3 results
-    const options = ["bau", "cua", "tom", "ca", "nai", "ga"];
-    const icons = {
-        bau: "🍐",
-        cua: "🦀",
-        tom: "🦐",
-        ca: "🐟",
-        nai: "🦌",
-        ga: "🐓"
-    };
-
-    const result = [
-        options[Math.floor(Math.random() * options.length)],
-        options[Math.floor(Math.random() * options.length)],
-        options[Math.floor(Math.random() * options.length)]
-    ];
-
-    // Calculate winnings
-    let winnings = result.reduce((total, res) => total + (bets[res] * 2), 0);
-    balance += winnings;
-
-    // Cập nhật kết quả
-    document.getElementById("balance").textContent = balance;
-    document.getElementById("result").textContent = `Kết quả: ${result.map(r => icons[r]).join(" ")} \nBạn đã ${winnings > 0 ? "thắng " + winnings + " VNĐ!" : "thua!"}`;
-
-    // Cập nhật chuỗi thắng/thua tự động
-    updateStreak(winnings > 0); // Gọi hàm và truyền vào kết quả thắng/thua
-
-    // Lưu lịch sử
-    gameHistory.unshift({ result: result, winnings: winnings });
-    updateHistory();
-
-    // Disable betting and show countdown timer
-    document.querySelectorAll(".bet").forEach(btn => btn.style.pointerEvents = "none");
-    let countdown = 5;
-    document.getElementById("timer").textContent = `Vui lòng đợi ${countdown} giây để đặt cược mới...`;
-
-    let timer = setInterval(() => {
-        countdown--;
-        document.getElementById("timer").textContent = `Vui lòng đợi ${countdown} giây để đặt cược mới...`;
-
-        if (countdown === 0) {
-            clearInterval(timer);
-
-            // Reset bets
-            bets = {
-                bau: 0,
-                cua: 0,
-                tom: 0,
-                ca: 0,
-                nai: 0,
-                ga: 0
+            // Randomly select 3 results
+            const options = ["bau", "cua", "tom", "ca", "nai", "ga"];
+            const icons = {
+                bau: "🍐",
+                cua: "🦀",
+                tom: "🦐",
+                ca: "🐟",
+                nai: "🦌",
+                ga: "🐓"
             };
 
-            document.querySelectorAll(".bet span").forEach(span => span.textContent = "0");
-            document.querySelectorAll(".bet").forEach(btn => {
-                btn.style.pointerEvents = "auto";
-                btn.classList.remove("placed");
-            });
+            const result = [
+                options[Math.floor(Math.random() * options.length)],
+                options[Math.floor(Math.random() * options.length)],
+                options[Math.floor(Math.random() * options.length)]
+            ];
 
-            document.getElementById("result").textContent = "Hãy đặt cược để chơi tiếp!";
-            document.getElementById("timer").textContent = "";
+            // Calculate winnings
+            let winnings = result.reduce((total, res) => total + (bets[res] * 2), 0);
+            balance += winnings;
+
+            // Cập nhật kết quả
+            document.getElementById("balance").textContent = balance;
+            document.getElementById("result").textContent = `Kết quả: ${result.map(r => icons[r]).join(" ")} \nBạn đã ${winnings > 0 ? "thắng " + winnings + " VNĐ!" : "thua!"}`;
+
+            // Lưu lịch sử
+            gameHistory.unshift({ result: result, winnings: winnings });
+            updateHistory();
+
+            // Cập nhật cầu (chuỗi thắng thua)
+            updateStreak(winnings > 0);
+
+            // Show blinking effect for correct bets
+            highlightCorrectBets(result);
+
+            // Disable betting and show countdown timer
+            document.querySelectorAll(".bet").forEach(btn => btn.style.pointerEvents = "none");
+            let countdown = 5;
+            document.getElementById("timer").textContent = `Vui lòng đợi ${countdown} giây để đặt cược mới...`;
+
+            let timer = setInterval(() => {
+                countdown--;
+                document.getElementById("timer").textContent = `Vui lòng đợi ${countdown} giây để đặt cược mới...`;
+
+                if (countdown === 0) {
+                    clearInterval(timer);
+
+                    // Reset bets
+                    bets = {
+                        bau: 0,
+                        cua: 0,
+                        tom: 0,
+                        ca: 0,
+                        nai: 0,
+                        ga: 0
+                    };
+
+                    document.querySelectorAll(".bet span").forEach(span => span.textContent = "0");
+                    document.querySelectorAll(".bet").forEach(btn => {
+                        btn.style.pointerEvents = "auto";
+                        btn.classList.remove("placed", "blink");
+                    });
+
+                    document.getElementById("result").textContent = "Hãy đặt cược để chơi tiếp!";
+                    document.getElementById("timer").textContent = "";
+                }
+            }, 1000);
         }
-    }, 1000);
-}
 
+        function highlightCorrectBets(result) {
+            result.forEach(item => {
+                if (bets[item] > 0) {
+                    document.getElementById(item).classList.add("blink");
+                }
+            });
+        }
+
+        function updateHistory() {
+            const historyList = document.getElementById("historyList");
+            historyList.innerHTML = ''; // Clear current history
+            if (gameHistory.length === 0) {
+                historyList.innerHTML = '<li>Chưa có kết quả.</li>';
+            } else {
+                gameHistory.slice(0, 5).forEach(game => {
+                    const historyItem = document.createElement("li");
+                    historyItem.textContent = `Kết quả: ${game.result.map(r => r).join(" ")} - Thắng: ${game.winnings > 0 ? game.winnings + " VNĐ" : "Thua"}`;
+                    historyList.appendChild(historyItem);
+                });
+            }
+        }
+
+        function updateStreak(won) {
+            if (won) {
+                currentStreak++;
+                lastResult = "Thắng";
+            } else {
+                currentStreak = 0;
+                lastResult = "Thua";
+            }
+
+            document.getElementById("streak").textContent = `Cầu: ${lastResult} - Chuỗi thắng thua: ${currentStreak}`;
+        }
     </script>
 
 </body>
