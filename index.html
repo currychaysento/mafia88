@@ -57,17 +57,6 @@
             box-shadow: 0 0 10px yellow;
         }
 
-        /* New CSS for blinking effect */
-        .blink {
-            animation: blinkAnimation 1s infinite;
-        }
-
-        @keyframes blinkAnimation {
-            50% {
-                opacity: 0;
-            }
-        }
-
         button {
             background-color: #e74c3c;
             color: white;
@@ -123,6 +112,15 @@
             font-size: 16px;
             color: #3498db;
         }
+
+        .skip-btn {
+            background-color: #f39c12;
+            margin-top: 20px;
+        }
+
+        .skip-btn:hover {
+            background-color: #e67e22;
+        }
     </style>
 </head>
 <body>
@@ -144,6 +142,7 @@
         </div>
 
         <button onclick="playGame()">🎲 Quay Xúc Xắc</button>
+        <button class="skip-btn" onclick="skipGame()">⏭ Bỏ qua và Đặt cược lại</button>
 
         <div class="result" id="result"></div>
         <div class="timer" id="timer"></div>
@@ -174,6 +173,7 @@
         let gameHistory = []; // Lưu lịch sử thắng thua
         let currentStreak = 0; // Cầu thắng thua
         let lastResult = ""; // Lưu kết quả thắng thua trước đó
+        let countdownTimer = null;
 
         function placeBet(choice) {
             let betAmount = parseInt(document.getElementById("betAmount").value);
@@ -232,43 +232,53 @@
             // Cập nhật cầu (chuỗi thắng thua)
             updateStreak(winnings > 0);
 
-            // Show blinking effect for correct bets
-            highlightCorrectBets(result);
-
             // Disable betting and show countdown timer
             document.querySelectorAll(".bet").forEach(btn => btn.style.pointerEvents = "none");
             let countdown = 5;
             document.getElementById("timer").textContent = `Vui lòng đợi ${countdown} giây để đặt cược mới...`;
 
-            let timer = setInterval(() => {
+            countdownTimer = setInterval(() => {
                 countdown--;
                 document.getElementById("timer").textContent = `Vui lòng đợi ${countdown} giây để đặt cược mới...`;
 
                 if (countdown === 0) {
-                    clearInterval(timer);
-
-                    // Reset bets
-                    bets = {
-                        bau: 0,
-                        cua: 0,
-                        tom: 0,
-                        ca: 0,
-                        nai: 0,
-                        ga: 0
-                    };
-
-                    document.querySelectorAll(".bet span").forEach(span => span.textContent = "0");
-                    document.querySelectorAll(".bet").forEach(btn => {
-                        btn.style.pointerEvents = "auto";
-                        btn.classList.remove("placed", "blink");
-                    });
-
-                    document.getElementById("result").textContent = "Hãy đặt cược để chơi tiếp!";
-                    document.getElementById("timer").textContent = "";
+                    clearInterval(countdownTimer);
+                    resetBets();
                 }
             }, 1000);
         }
 
-        function highlightCorrectBets(result) {
-            result.forEach(item => {
-                if (bets
+        function skipGame() {
+            clearInterval(countdownTimer);  // Clear the countdown timer
+            resetBets();  // Reset the bets immediately
+        }
+
+        function resetBets() {
+            bets = {
+                bau: 0,
+                cua: 0,
+                tom: 0,
+                ca: 0,
+                nai: 0,
+                ga: 0
+            };
+
+            document.querySelectorAll(".bet span").forEach(span => span.textContent = "0");
+            document.querySelectorAll(".bet").forEach(btn => {
+                btn.style.pointerEvents = "auto";
+                btn.classList.remove("placed");
+            });
+
+            document.getElementById("result").textContent = "Hãy đặt cược để chơi tiếp!";
+            document.getElementById("timer").textContent = "";
+        }
+
+        function updateHistory() {
+            const historyList = document.getElementById("historyList");
+            historyList.innerHTML = ''; // Clear current history
+            if (gameHistory.length === 0) {
+                historyList.innerHTML = '<li>Chưa có kết quả.</li>';
+            } else {
+                gameHistory.slice(0, 5).forEach(game => {
+                    const historyItem = document.createElement("li");
+                    historyItem
