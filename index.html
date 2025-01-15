@@ -173,14 +173,14 @@
     </div>
 
     <script>
-        let balance = 1000;
+        let balance = 100000;
         let bets = {
-            bau: 0,
-            cua: 0,
-            tom: 0,
-            ca: 0,
-            nai: 0,
-            ga: 0
+            🍐: 0,
+            🦀: 0,
+            🦐: 0,
+            🐟: 0,
+            🦌: 0,
+            🐓: 0
         };
         let historyCount = 0;
 
@@ -205,7 +205,7 @@
             return;
         }
 
-        const options = ["bau", "cua", "tom", "ca", "nai", "ga"];
+        const options = ["bau🍐", "🦀", "🦐", "🐟", "🦌", "🐓"];
         const winChance = 40; // Tỷ lệ thắng (40%)
 
         let result = [];
@@ -267,7 +267,7 @@
                 document.getElementById(res).classList.add("stop-blink");
             });
 
-            bets = { bau: 0, cua: 0, tom: 0, ca: 0, nai: 0, ga: 0 };
+            bets = { 🍐: 0, 🦀: 0, 🦐: 0, 🐟: 0, 🦌: 0, 🐓: 0 };
             document.querySelectorAll(".bet span").forEach(span => span.textContent = "0");
             document.querySelectorAll(".bet").forEach(bet => {
                 bet.classList.remove("placed", "stop-blink");
