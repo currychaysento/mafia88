@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Bầu Cua Tôm Cá</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #34495e;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .balance {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .bet-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .bet {
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .bet span {
+            font-size: 16px;
+            color: yellow;
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
+        }
+
+        .bet.placed {
+            border-color: yellow;
+            box-shadow: 0 0 10px yellow;
+        }
+
+        button {
+            background-color: #e74c3c;
+            color: white;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #c0392b;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            width: 100px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .timer {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #f1c40f;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Game Bầu Cua Tôm Cá</h1>
+        <div class="balance">Số dư: <span id="balance">1000</span> VNĐ</div>
+
+        <label for="betAmount">Số tiền cược:</label>
+        <input type="number" id="betAmount" min="1" value="100">
+
+        <div class="bet-container">
+            <div class="bet" id="bau" style="background-color: #2ecc71;" onclick="placeBet('bau')">🍐 Bầu <span id="bauBet">0</span></div>
+            <div class="bet" id="cua" style="background-color: #e74c3c;" onclick="placeBet('cua')">🦀 Cua <span id="cuaBet">0</span></div>
+            <div class="bet" id="tom" style="background-color: #f1c40f;" onclick="placeBet('tom')">🦐 Tôm <span id="tomBet">0</span></div>
+            <div class="bet" id="ca" style="background-color: #3498db;" onclick="placeBet('ca')">🐟 Cá <span id="caBet">0</span></div>
+            <div class="bet" id="nai" style="background-color: #9b59b6;" onclick="placeBet('nai')">🦌 Nai <span id="naiBet">0</span></div>
+            <div class="bet" id="ga" style="background-color: #e67e22;" onclick="placeBet('ga')">🐓 Gà <span id="gaBet">0</span></div>
+        </div>
+
+        <button onclick="playGame()">🎲 Quay Xúc Xắc</button>
+
+        <div class="result" id="result"></div>
+        <div class="timer" id="timer"></div>
+    </div>
+
+    <script>
+        let balance = 1000;
+        let bets = {
+            bau: 0,
+            cua: 0,
+            tom: 0,
+            ca: 0,
+            nai: 0,
+            ga: 0
+        };
+
+        function placeBet(choice) {
+            let betAmount = parseInt(document.getElementById("betAmount").value);
+            if (betAmount > balance || betAmount <= 0) {
+                alert("Số tiền cược không hợp lệ!");
+                return;
+            }
+
+            bets[choice] += betAmount;
+            balance -= betAmount;
+
+            document.getElementById("balance").textContent = balance;
+
+            let betElement = document.getElementById(choice);
+            let betSpan = document.getElementById(choice + "Bet");
+
+            betSpan.textContent = bets[choice] + " ✅";
+            betElement.classList.add("placed");
+        }
+
+        function playGame() {
+            if (Object.values(bets).every(value => value === 0)) {
+                alert("Bạn chưa đặt cược!");
+                return;
+            }
+
+            // Randomly select 3 results
+            const options = ["bau", "cua", "tom", "ca", "nai", "ga"];
+            const icons = {
+                bau: "🍐",
+                cua: "🦀",
+                tom: "🦐",
+                ca: "🐟",
+                nai: "🦌",
+                ga: "🐓"
+            };
+
+            const result = [
+                options[Math.floor(Math.random() * options.length)],
+                options[Math.floor(Math.random() * options.length)],
+                options[Math.floor(Math.random() * options.length)]
+            ];
+
+            // Calculate winnings
+            let winnings = result.reduce((total, res) => total + (bets[res] * 2), 0);
+            balance += winnings;
+
+            document.getElementById("balance").textContent = balance;
+            document.getElementById("result").textContent = `Kết quả: ${result.map(r => icons[r]).join(" ")} \nBạn đã ${winnings > 0 ? "thắng " + winnings + " VNĐ!" : "thua!"}`;
+
+            // Disable betting and show countdown timer
+            document.querySelectorAll(".bet").forEach(btn => btn.style.pointerEvents = "none");
+            let countdown = 5;
+            document.getElementById("timer").textContent = `Vui lòng đợi ${countdown} giây để đặt cược mới...`;
+
+            let timer = setInterval(() => {
+                countdown--;
+                document.getElementById("timer").textContent = `Vui lòng đợi ${countdown} giây để đặt cược mới...`;
+
+                if (countdown === 0) {
+                    clearInterval(timer);
+
+                    // Reset bets
+                    bets = {
+                        bau: 0,
+                        cua: 0,
+                        tom: 0,
+                        ca: 0,
+                        nai: 0,
+                        ga: 0
+                    };
+
+                    document.querySelectorAll(".bet span").forEach(span => span.textContent = "0");
+                    document.querySelectorAll(".bet").forEach(btn => {
+                        btn.style.pointerEvents = "auto";
+                        btn.classList.remove("placed");
+                    });
+
+                    document.getElementById("result").textContent = "Hãy đặt cược để chơi tiếp!";
+                    document.getElementById("timer").textContent = "";
+                }
+            }, 1000);
+        }
+    </script>
+
+</body>
+</html>
