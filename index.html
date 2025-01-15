@@ -173,14 +173,14 @@
     </div>
 
     <script>
-        let balance = 100000;
+        let balance = 1000000;
         let bets = {
-            🍐: 0,
-            🦀: 0,
-            🦐: 0,
-            🐟: 0,
-            🦌: 0,
-            🐓: 0
+            bau: 0,
+            cua: 0,
+            tom: 0,
+            ca: 0,
+            nai: 0,
+            ga: 0
         };
         let historyCount = 0;
 
@@ -200,66 +200,69 @@
         }
 
         function playGame() {
-        if (Object.values(bets).every(value => value === 0)) {
-            alert("Bạn chưa đặt cược!");
-            return;
-        }
-
-        const options = ["bau🍐", "🦀", "🦐", "🐟", "🦌", "🐓"];
-        const winChance = 40; // Tỷ lệ thắng (40%)
-
-        let result = [];
-        const isWin = Math.random() * 100 < winChance; // Xác định người chơi thắng hay thua
-
-        if (isWin) {
-            // Người chơi thắng: Chọn kết quả từ các ô đã đặt cược
-            const placedBets = Object.keys(bets).filter(key => bets[key] > 0);
-            for (let i = 0; i < 3; i++) {
-                result.push(placedBets[Math.floor(Math.random() * placedBets.length)]);
+            if (Object.values(bets).every(value => value === 0)) {
+                alert("Bạn chưa đặt cược!");
+                return;
             }
-        } else {
-            // Người chơi thua: Chọn kết quả ngẫu nhiên
-            for (let i = 0; i < 3; i++) {
-                result.push(options[Math.floor(Math.random() * options.length)]);
-            }
-        }
 
-        let winnings = 0;
-        result.forEach(res => {
-            if (bets[res] > 0) {
-                winnings += bets[res] * 2;
+            const options = ["bau", "cua", "tom", "ca", "nai", "ga"];
+            const winChance = 40; // Tỷ lệ thắng (40%)
+
+            let result = [];
+            const isWin = Math.random() * 100 < winChance; // Xác định người chơi thắng hay thua
+
+            if (isWin) {
+                // Người chơi thắng: Chọn kết quả từ các ô đã đặt cược
+                const placedBets = Object.keys(bets).filter(key => bets[key] > 0);
+                for (let i = 0; i < 3; i++) {
+                    result.push(placedBets[Math.floor(Math.random() * placedBets.length)]);
+                }
+            } else {
+                // Người chơi thua: Chọn kết quả ngẫu nhiên
+                for (let i = 0; i < 3; i++) {
+                    result.push(options[Math.floor(Math.random() * options.length)]);
+                }
+            }
+
+            let winnings = 0;
+            result.forEach(res => {
+                // Kiểm tra nếu người chơi đặt 3 con giống nhau
+                if (result.filter(r => r === res).length === 3) {
+                    winnings += bets[res] * 10;  // Nếu 3 con giống nhau, nhân 10 lần tiền cược
+                } else {
+                    winnings += bets[res] * 2;   // Nếu không, nhân 2 lần tiền cược
+                }
                 document.getElementById(res).classList.add("correct");
-            }
-        });
+            });
 
-        balance += winnings;
-        document.getElementById("balance").textContent = balance;
+            balance += winnings;
+            document.getElementById("balance").textContent = balance;
 
-        historyCount++;
-        const outcome = winnings > 0 ? "Thắng" : "Thua";
-        document.getElementById("result").textContent = `Kết quả: ${result.join(", ")} - ${outcome}!`;
-        
-        // Cập nhật lịch sử cược, thêm vào đầu bảng
-        const row = `<tr>
-            <td>${historyCount}</td>
-            <td>${result.join(", ")}</td>
-            <td>${outcome}</td>
-            <td>${winnings}</td>
-        </tr>`;
-        document.getElementById("historyTable").innerHTML = row + document.getElementById("historyTable").innerHTML;
+            historyCount++;
+            const outcome = winnings > 0 ? "Thắng" : "Thua";
+            document.getElementById("result").textContent = `Kết quả: ${result.join(", ")} - ${outcome}!`;
+            
+            // Cập nhật lịch sử cược, thêm vào đầu bảng
+            const row = `<tr>
+                <td>${historyCount}</td>
+                <td>${result.join(", ")}</td>
+                <td>${outcome}</td>
+                <td>${winnings}</td>
+            </tr>`;
+            document.getElementById("historyTable").innerHTML = row + document.getElementById("historyTable").innerHTML;
 
-        // Countdown để reset game
-        let countdown = 5;
-        document.getElementById("timer").textContent = `Đặt cược mới trong ${countdown} giây...`;
-        const interval = setInterval(() => {
-            countdown--;
+            // Countdown để reset game
+            let countdown = 5;
             document.getElementById("timer").textContent = `Đặt cược mới trong ${countdown} giây...`;
-            if (countdown === 0) {
-                clearInterval(interval);
-                resetGame(result);
-            }
-        }, 1000);
-    }
+            const interval = setInterval(() => {
+                countdown--;
+                document.getElementById("timer").textContent = `Đặt cược mới trong ${countdown} giây...`;
+                if (countdown === 0) {
+                    clearInterval(interval);
+                    resetGame(result);
+                }
+            }, 1000);
+        }
 
         function resetGame(result) {
             result.forEach(res => {
@@ -267,7 +270,7 @@
                 document.getElementById(res).classList.add("stop-blink");
             });
 
-            bets = { 🍐: 0, 🦀: 0, 🦐: 0, 🐟: 0, 🦌: 0, 🐓: 0 };
+            bets = { bau: 0, cua: 0, tom: 0, ca: 0, nai: 0, ga: 0 };
             document.querySelectorAll(".bet span").forEach(span => span.textContent = "0");
             document.querySelectorAll(".bet").forEach(bet => {
                 bet.classList.remove("placed", "stop-blink");
