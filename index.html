@@ -1,246 +1,178 @@
 <!DOCTYPE html>
-<html lang="vi">
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Bầu Cua Tôm Cá</title>
-    <style>
+  <meta charset="UTF-8" />
+  <title>Game Bóng Rổ - 5 Người</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-        font-family: 'Arial', sans-serif;
-        margin: 0;
-        padding: 0;
-        background: linear-gradient(to right, #ffecd2, #fcb69f);
-        color: #333;
+      overflow: hidden;
+      background: #87ceeb;
+      font-family: Arial, sans-serif;
     }
 
-    .container {
-        max-width: 600px;
-        margin: 50px auto;
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        padding: 20px;
+    #gameArea {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(#87ceeb, #228B22);
     }
 
-    h1 {
-        text-align: center;
-        color: #4caf50;
-        font-size: 24px;
+    .player {
+      position: absolute;
+      width: 60px;
+      height: 120px;
+      background: url('https://i.imgur.com/4YhGHan.png') no-repeat center;
+      background-size: contain;
+      text-align: center;
     }
 
-    .balance {
-        text-align: center;
-        font-size: 18px;
-        margin: 10px 0;
-        color: #333;
+    .nameTag {
+      position: absolute;
+      top: -20px;
+      width: 100%;
+      text-align: center;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      text-shadow: 1px 1px 2px black;
     }
 
-    label {
-        font-weight: bold;
+    #ball {
+      position: absolute;
+      bottom: 140px;
+      left: 100px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: orange;
+      display: none;
     }
 
-    input[type="number"] {
-        width: calc(100% - 24px);
-        padding: 8px;
-        font-size: 16px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+    #hoop {
+      position: absolute;
+      top: 100px;
+      right: 50px;
+      width: 100px;
+      height: 100px;
     }
 
-    .bet-container {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        margin-top: 20px;
+    #rim {
+      width: 100px;
+      height: 10px;
+      background: red;
+      position: absolute;
+      top: 40px;
     }
 
-    .bet {
-        flex: 1;
-        margin: 5px;
-        padding: 10px;
-        text-align: center;
-        background: #4caf50;
-        color: white;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: transform 0.2s;
+    #score {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 24px;
+      color: #fff;
     }
 
-    .bet:hover {
-        background: #388e3c;
-        transform: scale(1.1);
+    #instruction {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-size: 18px;
+      color: #fff;
     }
-
-    button {
-        width: 100%;
-        padding: 10px;
-        background: #f44336;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background 0.3s;
-    }
-
-    button:hover {
-        background: #d32f2f;
-    }
-
-    .result {
-        text-align: center;
-        margin: 20px 0;
-        font-weight: bold;
-    }
-
-    .timer {
-        text-align: center;
-        font-size: 14px;
-        color: #666;
-    }
-
-    .history {
-        margin-top: 20px;
-    }
-
-    .history h3 {
-        text-align: center;
-        color: #333;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
-
-    table th, table td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-    }
-
-    table th {
-        background: #f4f4f4;
-        color: #333;
-        font-weight: bold;
-    }
-
-    table tr:nth-child(even) {
-        background: #f9f9f9;
-    }
-
-    table tr:hover {
-        background: #f1f1f1;
-    }
-</style>
+  </style>
 </head>
-
 <body>
-    <div class="container">
-        <h1>Game Bầu Cua Tôm Cá</h1>
-        <div class="balance">Số dư: <span id="balance">10000</span> VNĐ</div>
-
-        <label for="betAmount">Số tiền cược:</label>
-        <input type="number" id="betAmount" min="1" value="100">
-
-        <div class="bet-container">
-            <div class="bet" id="bau" onclick="placeBet('bau')">🍐 Bầu <span id="bauBet">0</span></div>
-            <div class="bet" id="cua" onclick="placeBet('cua')">🦀 Cua <span id="cuaBet">0</span></div>
-            <div class="bet" id="tom" onclick="placeBet('tom')">🦐 Tôm <span id="tomBet">0</span></div>
-            <div class="bet" id="ca" onclick="placeBet('ca')">🐟 Cá <span id="caBet">0</span></div>
-            <div class="bet" id="nai" onclick="placeBet('nai')">🦌 Nai <span id="naiBet">0</span></div>
-            <div class="bet" id="ga" onclick="placeBet('ga')">🐓 Gà <span id="gaBet">0</span></div>
-        </div>
-
-        <button onclick="playGame()">🎲 Quay Xúc Xắc</button>
-
-        <div class="result" id="result"></div>
-        <div class="timer" id="timer"></div>
-
-        <div class="history">
-            <h3>Lịch sử cược</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Kết quả</th>
-                        <th>Trạng thái</th>
-                        <th>Tiền thắng</th>
-                    </tr>
-                </thead>
-                <tbody id="historyTable"></tbody>
-            </table>
-        </div>
+  <div id="gameArea">
+    <!-- Người chơi -->
+    <div class="player" id="player1" style="bottom: 50px; left: 50px;">
+      <div class="nameTag">Curry</div>
+    </div>
+    <div class="player" id="player2" style="bottom: 50px; left: 150px;">
+      <div class="nameTag">Ká Bịp</div>
+    </div>
+    <div class="player" id="player3" style="bottom: 50px; left: 250px;">
+      <div class="nameTag">Đôn Chích</div>
+    </div>
+    <div class="player" id="player4" style="bottom: 50px; left: 350px;">
+      <div class="nameTag">Em Dôn</div>
+    </div>
+    <div class="player" id="player5" style="bottom: 50px; left: 450px;">
+      <div class="nameTag">Mr.Bao</div>
     </div>
 
-    <script>
-        let balance = 10000; // Số dư của người chơi
-        const bets = {
-            bau: 0,
-            cua: 0,
-            tom: 0,
-            ca: 0,
-            nai: 0,
-            ga: 0,
-        };
+    <div id="ball"></div>
 
-        // Cập nhật hiển thị số dư
-        function updateBalanceDisplay() {
-            document.getElementById('balance').innerText = balance;
+    <div id="hoop">
+      <div id="rim"></div>
+    </div>
+
+    <div id="score">Score: 0</div>
+    <div id="instruction">Nhấn phím <strong>Space</strong> để ném bóng</div>
+  </div>
+
+  <script>
+    const ball = document.getElementById('ball');
+    const scoreBoard = document.getElementById('score');
+    let score = 0;
+    let isShooting = false;
+
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && !isShooting) {
+        shootBall();
+      }
+    });
+
+    function shootBall() {
+      isShooting = true;
+      ball.style.display = 'block';
+      let x = 100;
+      let y = window.innerHeight - 140;
+      let dx = 4;
+      let dy = -8;
+      let gravity = 0.3;
+
+      const animation = setInterval(() => {
+        x += dx;
+        y += dy;
+        dy += gravity;
+
+        ball.style.left = x + 'px';
+        ball.style.bottom = y + 'px';
+
+        const hoopX = window.innerWidth - 100;
+        const hoopY = window.innerHeight - 400;
+
+        if (
+          x > hoopX &&
+          x < hoopX + 100 &&
+          y > hoopY &&
+          y < hoopY + 20
+        ) {
+          score++;
+          scoreBoard.innerText = `Score: ${score}`;
+          clearInterval(animation);
+          resetBall();
         }
 
-        // Đặt cược vào một mục cụ thể
-        function placeBet(betType) {
-            const betAmount = parseInt(document.getElementById('betAmount').value);
-            if (isNaN(betAmount) || betAmount <= 0) {
-                alert("Vui lòng nhập số tiền cược hợp lệ!");
-                return;
-            }
-
-            if (betAmount > balance) {
-                alert("Số dư không đủ!");
-                return;
-            }
-
-            // Trừ số tiền khỏi số dư và cập nhật cược
-            balance -= betAmount;
-            bets[betType] += betAmount;
-
-            // Cập nhật hiển thị
-            document.getElementById(`${betType}Bet`).innerText = bets[betType];
-            updateBalanceDisplay();
+        if (y <= 0 || x > window.innerWidth) {
+          clearInterval(animation);
+          resetBall();
         }
+      }, 20);
+    }
 
-        // Hiển thị kết quả (giả lập)
-        function playGame() {
-            const results = ["bau", "cua", "tom", "ca", "nai", "ga"];
-            const result = results[Math.floor(Math.random() * results.length)];
-            document.getElementById('result').innerText = `Kết quả: ${result.toUpperCase()}`;
-
-            // Kiểm tra thắng/thua
-            if (bets[result] > 0) {
-                const winnings = bets[result] * 2; // Thắng gấp đôi
-                balance += winnings;
-                alert(`Chúc mừng! Bạn thắng ${winnings} VNĐ!`);
-            } else {
-                alert("Rất tiếc, bạn không thắng!");
-            }
-
-            // Reset cược
-            for (let key in bets) {
-                bets[key] = 0;
-                document.getElementById(`${key}Bet`).innerText = 0;
-            }
-
-            updateBalanceDisplay();
-        }
-
-        // Cập nhật hiển thị ban đầu
-        updateBalanceDisplay();
-    </script>
+    function resetBall() {
+      ball.style.display = 'none';
+      ball.style.left = '100px';
+      ball.style.bottom = '140px';
+      isShooting = false;
+    }
+  </script>
 </body>
-
 </html>
