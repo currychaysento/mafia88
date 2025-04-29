@@ -45,8 +45,6 @@
 
     #ball {
       position: absolute;
-      bottom: 140px;
-      left: 100px;
       width: 30px;
       height: 30px;
       border-radius: 50%;
@@ -122,6 +120,16 @@
     let score = 0;
     let isShooting = false;
 
+    const startX = 80;
+    const startY = 140;
+
+    function resetBall() {
+      ball.style.display = 'none';
+      ball.style.left = startX + 'px';
+      ball.style.bottom = startY + 'px';
+      isShooting = false;
+    }
+
     document.addEventListener('keydown', (e) => {
       if (e.code === 'Space' && !isShooting) {
         shootBall();
@@ -131,48 +139,40 @@
     function shootBall() {
       isShooting = true;
       ball.style.display = 'block';
-      let x = 100;
-      let y = window.innerHeight - 140;
-      let dx = 4;
-      let dy = -8;
-      let gravity = 0.3;
 
-      const animation = setInterval(() => {
+      let x = startX;
+      let y = startY;
+      let dx = 5;
+      let dy = 10;
+      const gravity = 0.5;
+
+      const interval = setInterval(() => {
         x += dx;
         y += dy;
-        dy += gravity;
+        dy -= gravity;
 
         ball.style.left = x + 'px';
         ball.style.bottom = y + 'px';
 
         const hoopX = window.innerWidth - 100;
-        const hoopY = window.innerHeight - 400;
+        const hoopY = window.innerHeight - 160;
 
-        if (
-          x > hoopX &&
-          x < hoopX + 100 &&
-          y > hoopY &&
-          y < hoopY + 20
-        ) {
+        if (x >= hoopX && x <= hoopX + 100 && y >= hoopY && y <= hoopY + 30) {
           score++;
           scoreBoard.innerText = `Score: ${score}`;
-          clearInterval(animation);
-          resetBall();
+          clearInterval(interval);
+          setTimeout(resetBall, 500);
         }
 
-        if (y <= 0 || x > window.innerWidth) {
-          clearInterval(animation);
-          resetBall();
+        if (x > window.innerWidth || y < 0) {
+          clearInterval(interval);
+          setTimeout(resetBall, 500);
         }
       }, 20);
     }
 
-    function resetBall() {
-      ball.style.display = 'none';
-      ball.style.left = '100px';
-      ball.style.bottom = '140px';
-      isShooting = false;
-    }
+    // Khởi tạo vị trí bóng ban đầu
+    resetBall();
   </script>
 </body>
 </html>
