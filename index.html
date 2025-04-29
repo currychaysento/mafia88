@@ -6,184 +6,186 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Bầu Cua Tôm Cá</title>
     <style>
-       body {
-    font-family: Arial, sans-serif;
-    background-color: #1E1E1E;
-    color: #E0E0E0;
-    text-align: center;
-    padding: 20px;
-}
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: radial-gradient(circle, #1E1E1E, #000);
+            color: #E0E0E0;
+            text-align: center;
+            padding: 20px;
+            animation: backgroundScroll 10s linear infinite;
+        }
 
-.container {
-    max-width: 600px;
-    margin: auto;
-    padding: 20px;
-    background: linear-gradient(135deg, #252525, #333);
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
-}
+        @keyframes backgroundScroll {
+            0% {
+                background-position: 0 0;
+            }
 
-.balance {
-    font-size: 22px;
-    font-weight: bold;
-    color: #FFD700;
-    margin-bottom: 20px;
-}
+            100% {
+                background-position: 0 100%;
+            }
+        }
 
-.bet-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
-}
+        .container {
+            max-width: 700px;
+            margin: auto;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(30, 30, 30, 0.9));
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+            border: 2px solid #FFD700;
+        }
 
-.bet {
-    padding: 15px;
-    font-size: 18px;
-    border: 2px solid transparent;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    background: rgba(46, 204, 113, 0.2);
-    color: #A7E0A1;
-    box-shadow: 0 0 5px rgba(46, 204, 113, 0.2);
-}
+        h1 {
+            font-size: 2.8rem;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
 
-.bet:hover {
-    background: rgba(46, 204, 113, 0.4);
-    box-shadow: 0 0 10px rgba(46, 204, 113, 0.4);
-}
+        .balance {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
 
-.bet span {
-    font-size: 14px;
-    color: #FFD700;
-    position: absolute;
-    bottom: 5px;
-    right: 10px;
-}
+        .bet-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
 
-.bet.placed {
-    border-color: #FFD700;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-}
+        .bet {
+            padding: 15px;
+            font-size: 20px;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            background: rgba(0, 123, 255, 0.3);
+            color: #FFF;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+            transition: transform 0.2s ease-in-out, background 0.3s ease;
+        }
 
-.bet.correct {
-    animation: blink 0.5s infinite;
-}
+        .bet:hover {
+            background: rgba(0, 123, 255, 0.6);
+            transform: scale(1.1);
+        }
 
-.bet.stop-blink {
-    animation: none;
-}
+        .bet span {
+            font-size: 16px;
+            color: #FFD700;
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
+        }
 
-@keyframes blink {
-    0%, 100% {
-        background: rgba(46, 204, 113, 0.5);
-    }
-    50% {
-        background: rgba(46, 204, 113, 0.8);
-    }
-}
+        button {
+            background: linear-gradient(135deg, #4CAF50, #008CBA);
+            color: white;
+            font-size: 20px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 15px rgba(72, 239, 128, 0.6);
+        }
 
-button {
-    background: linear-gradient(135deg, #3A7BD5, #4A00E0);
-    color: white;
-    font-size: 18px;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 0 8px rgba(58, 123, 213, 0.5);
-}
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(72, 239, 128, 0.8);
+        }
 
-button:hover {
-    background: linear-gradient(135deg, #2F64B6, #3E0097);
-    transform: scale(1.05);
-    box-shadow: 0 0 12px rgba(58, 123, 213, 0.8);
-}
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0.8, 0.5);
+        }
 
-input {
-    padding: 10px;
-    font-size: 16px;
-    width: 120px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: 1px solid #00AEEF;
-    background: #252525;
-    color: white;
-    text-align: center;
-}
+        .timer {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #FF6F61;
+        }
 
-.result {
-    margin-top: 20px;
-    font-size: 20px;
-    font-weight: bold;
-    color: #FFD700;
-    text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
-}
+        .history {
+            margin-top: 30px;
+        }
 
-.timer {
-    margin-top: 10px;
-    font-size: 16px;
-    color: #FF6F61;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            color: white;
+        }
 
-.history {
-    margin-top: 20px;
-}
+        th,
+        td {
+            border: 1px solid white;
+            padding: 10px;
+            text-align: center;
+        }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    color: white;
-}
+        th {
+            background: linear-gradient(135deg, #4A00E0, #7B1FA2);
+            color: #FFD700;
+        }
 
-th, td {
-    border: 1px solid white;
-    padding: 10px;
-    text-align: center;
-}
+        @keyframes winningEffect {
+            0% {
+                transform: scale(1);
+            }
 
-th {
-    background: linear-gradient(135deg, #4A00E0, #7B1FA2);
-}
+            50% {
+                transform: scale(1.1);
+                background: #FFD700;
+            }
 
-@keyframes fall {
-    0% {
-        transform: translateY(-10vh) translateX(0) rotate(0deg);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(100vh) translateX(20px) rotate(360deg);
-        opacity: 0;
-    }
-}
+            100% {
+                transform: scale(1);
+            }
+        }
 
-.petal {
-    position: absolute;
-    top: -10vh;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: fall linear infinite;
-}
+        .bet.correct {
+            animation: winningEffect 1s infinite;
+        }
 
-.cherry-blossom {
-    background: #FF69B4;
-}
+        .cherry-blossom,
+        .apricot-blossom {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: fall linear infinite;
+        }
 
-.apricot-blossom {
-    background: #FFCC00;
-}
+        .cherry-blossom {
+            background: #FF69B4;
+        }
 
+        .apricot-blossom {
+            background: #FFCC00;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
 <body>
-
     <div class="container">
         <h1>Game Bầu Cua Tôm Cá</h1>
         <div class="balance">Số dư: <span id="balance">10000</span> VNĐ</div>
@@ -220,141 +222,6 @@ th {
             </table>
         </div>
     </div>
-
-    <script>
-        let balance = 1000000;
-        let bets = {
-            bau: 0,
-            cua: 0,
-            tom: 0,
-            ca: 0,
-            nai: 0,
-            ga: 0
-        };
-        let historyCount = 0;
-
-        function placeBet(choice) {
-            const betAmount = parseInt(document.getElementById("betAmount").value);
-            if (betAmount > balance || betAmount <= 0) {
-                alert("Số tiền cược không hợp lệ!");
-                return;
-            }
-
-            bets[choice] += betAmount;
-            balance -= betAmount;
-
-            document.getElementById("balance").textContent = balance;
-            document.getElementById(choice + "Bet").textContent = bets[choice];
-            document.getElementById(choice).classList.add("placed");
-        }
-
-        function playGame() {
-            if (Object.values(bets).every(value => value === 0)) {
-                alert("Bạn chưa đặt cược!");
-                return;
-            }
-
-            const options = ["bau", "cua", "tom", "ca", "nai", "ga"];
-            const winChance = 40; // Tỷ lệ thắng (40%)
-
-            let result = [];
-            const isWin = Math.random() * 100 < winChance; // Xác định người chơi thắng hay thua
-
-            if (isWin) {
-                // Người chơi thắng: Chọn kết quả từ các ô đã đặt cược
-                const placedBets = Object.keys(bets).filter(key => bets[key] > 0);
-                for (let i = 0; i < 3; i++) {
-                    result.push(placedBets[Math.floor(Math.random() * placedBets.length)]);
-                }
-            } else {
-                // Người chơi thua: Chọn kết quả ngẫu nhiên
-                for (let i = 0; i < 3; i++) {
-                    result.push(options[Math.floor(Math.random() * options.length)]);
-                }
-            }
-
-            let winnings = 0;
-            result.forEach(res => {
-                // Kiểm tra nếu người chơi đặt 3 con giống nhau
-                if (result.filter(r => r === res).length === 3) {
-                    winnings += bets[res] * 10;  // Nếu 3 con giống nhau, nhân 10 lần tiền cược
-                } else {
-                    winnings += bets[res] * 2;   // Nếu không, nhân 2 lần tiền cược
-                }
-                document.getElementById(res).classList.add("correct");
-            });
-
-            balance += winnings;
-            document.getElementById("balance").textContent = balance;
-
-            historyCount++;
-            const outcome = winnings > 0 ? "Thắng" : "Thua";
-            document.getElementById("result").textContent = `Kết quả: ${result.join(", ")} - ${outcome}!`;
-
-            // Cập nhật lịch sử cược, thêm vào đầu bảng
-            const row = `<tr>
-                <td>${historyCount}</td>
-                <td>${result.join(", ")}</td>
-                <td>${outcome}</td>
-                <td>${winnings}</td>
-            </tr>`;
-            document.getElementById("historyTable").innerHTML = row + document.getElementById("historyTable").innerHTML;
-
-            // Countdown để reset game
-            let countdown = 5;
-            document.getElementById("timer").textContent = `Đặt cược mới trong ${countdown} giây...`;
-            const interval = setInterval(() => {
-                countdown--;
-                document.getElementById("timer").textContent = `Đặt cược mới trong ${countdown} giây...`;
-                if (countdown === 0) {
-                    clearInterval(interval);
-                    resetGame(result);
-                }
-            }, 1000);
-        }
-
-        function resetGame(result) {
-            result.forEach(res => {
-                document.getElementById(res).classList.remove("correct");
-                document.getElementById(res).classList.add("stop-blink");
-            });
-
-            bets = { bau: 0, cua: 0, tom: 0, ca: 0, nai: 0, ga: 0 };
-            document.querySelectorAll(".bet span").forEach(span => span.textContent = "0");
-            document.querySelectorAll(".bet").forEach(bet => {
-                bet.classList.remove("placed", "stop-blink");
-            });
-
-            document.getElementById("timer").textContent = "Bạn có thể đặt cược!";
-        }
-        function createPetal() {
-            const petal = document.createElement('div');
-            petal.classList.add('petal');
-
-            // Xác định loại hoa: Hoa đào (hồng) hoặc hoa mai (vàng)
-            if (Math.random() > 1) {
-                petal.classList.add('cherry-blossom');
-            } else {
-                petal.classList.add('apricot-blossom');
-            }
-
-            document.body.appendChild(petal);
-
-            petal.style.left = Math.random() * 100 + 'vw';
-            petal.style.width = Math.random() * 15 + 5 + 'px';
-            petal.style.height = petal.style.width;
-            petal.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            petal.style.opacity = Math.random() * 0.5 + 0.5;
-
-            setTimeout(() => {
-                petal.remove();
-            }, 5000);
-        }
-
-        setInterval(createPetal, 150);
-        
-    </script>
-
 </body>
 
 </html>
