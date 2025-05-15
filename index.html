@@ -1,150 +1,155 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cửa hàng Gia Dụng</title>
+  <meta charset="UTF-8">
+  <title>Sport Shop</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-
     body {
-      background-color: #f7f7f7;
-      color: #333;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f4f4;
     }
-
     header {
-      background-color: #0c7a7d;
+      background: #333;
       color: white;
-      padding: 20px;
-      text-align: center;
-    }
-
-    nav ul {
-      list-style: none;
+      padding: 15px;
       display: flex;
-      justify-content: center;
-      margin-top: 10px;
+      justify-content: space-between;
+      align-items: center;
     }
-
-    nav ul li {
-      margin: 0 15px;
+    header h1 {
+      margin: 0;
     }
-
-    nav ul li a {
+    nav a {
       color: white;
+      margin: 0 10px;
       text-decoration: none;
     }
-
-    .hero {
-      text-align: center;
-      padding: 40px 20px;
-      background-color: #e1f7f8;
+    input[type="text"] {
+      padding: 5px;
+      margin-left: 20px;
     }
-
-    .products {
-      padding: 40px 20px;
-      text-align: center;
-    }
-
-    .product-grid {
+    .grid {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
       gap: 20px;
+      padding: 20px;
+      justify-content: center;
     }
-
-    .product-card {
-      background-color: white;
+    .product {
+      background: white;
+      border: 1px solid #ddd;
       border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      width: 250px;
-      padding: 15px;
+      width: 220px;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-
-    .product-card img {
+    .product img {
       width: 100%;
-      height: 180px;
-      object-fit: cover;
       border-radius: 5px;
     }
-
-    .product-card h3 {
-      margin: 10px 0;
-      font-size: 1.1em;
+    .product h3 {
+      font-size: 18px;
     }
-
-    .product-card p {
-      color: #e91e63;
+    .product p {
+      color: green;
       font-weight: bold;
     }
-
-    .product-card button {
+    button {
       padding: 8px 12px;
-      background-color: #0c7a7d;
+      background: #28a745;
       color: white;
       border: none;
       border-radius: 4px;
       cursor: pointer;
     }
-
-    footer {
-      background-color: #0c7a7d;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      margin-top: 40px;
+    button:hover {
+      background: #218838;
     }
   </style>
 </head>
 <body>
+
   <header>
-    <h1>🏠 Cửa Hàng Gia Dụng</h1>
-    <nav>
-      <ul>
-        <li><a href="#">Trang chủ</a></li>
-        <li><a href="#">Sản phẩm</a></li>
-        <li><a href="#">Giới thiệu</a></li>
-        <li><a href="#">Liên hệ</a></li>
-      </ul>
-    </nav>
+    <h1>🏀 SPORT SHOP</h1>
+    <div>
+      <nav>
+        <a href="#">Trang chủ</a>
+        <a href="#" onclick="alert('Giỏ hàng đang phát triển')">🛒 Giỏ hàng</a>
+        <a href="#" onclick="alert('Chức năng đăng nhập đang phát triển')">🔐 Đăng nhập</a>
+      </nav>
+    </div>
+    <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm...">
   </header>
 
-  <section class="hero">
-    <h2>Chất lượng - Bền bỉ - Giá tốt</h2>
-    <p>Khám phá các sản phẩm gia dụng tiện ích cho gia đình bạn.</p>
-  </section>
+  <main>
+    <h2 style="text-align: center; margin-top: 20px;">Sản phẩm nổi bật</h2>
+    <div id="product-list" class="grid"></div>
+  </main>
 
-  <section class="products">
-    <h2>Sản phẩm nổi bật</h2>
-    <div class="product-grid">
-      <div class="product-card">
-        <img src="images/may-hut-bui.jpg" alt="Máy hút bụi" />
-        <h3>Máy hút bụi đa năng</h3>
-        <p>1.500.000₫</p>
-        <button>Thêm vào giỏ</button>
-      </div>
-      <div class="product-card">
-        <img src="images/noi-com.jpg" alt="Nồi cơm điện" />
-        <h3>Nồi cơm điện Toshiba</h3>
-        <p>850.000₫</p>
-        <button>Thêm vào giỏ</button>
-      </div>
-      <div class="product-card">
-        <img src="images/may-loc-nuoc.jpg" alt="Máy lọc nước" />
-        <h3>Máy lọc nước RO</h3>
-        <p>2.700.000₫</p>
-        <button>Thêm vào giỏ</button>
-      </div>
-    </div>
-  </section>
+  <script>
+    const products = [
+      {
+        id: 1,
+        name: "Nike Air Zoom Pegasus",
+        price: 120,
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?fit=crop&w=500&q=80",
+        category: "Giày"
+      },
+      {
+        id: 2,
+        name: "Áo thể thao Adidas",
+        price: 35,
+        image: "https://images.unsplash.com/photo-1584467735871-efd17337fc66?fit=crop&w=500&q=80",
+        category: "Áo"
+      },
+      {
+        id: 3,
+        name: "Quần short Gym Nike",
+        price: 28,
+        image: "https://images.unsplash.com/photo-1598970434795-0c54fe7c0642?fit=crop&w=500&q=80",
+        category: "Quần"
+      },
+      {
+        id: 4,
+        name: "Mũ lưỡi trai Puma",
+        price: 18,
+        image: "https://images.unsplash.com/photo-1621293954900-bb52eae6ecae?fit=crop&w=500&q=80",
+        category: "Phụ kiện"
+      }
+    ];
 
-  <footer>
-    <p>&copy; 2025 Cửa Hàng Gia Dụng. Đã đăng ký bản quyền.</p>
-  </footer>
+    const productList = document.getElementById("product-list");
+    const searchInput = document.getElementById("searchInput");
+
+    function renderProducts(productArray) {
+      productList.innerHTML = "";
+      productArray.forEach(p => {
+        productList.innerHTML += `
+          <div class="product">
+            <img src="${p.image}" alt="${p.name}">
+            <h3>${p.name}</h3>
+            <p>${p.price} USD</p>
+            <button onclick="addToCart(${p.id})">Thêm vào giỏ</button>
+          </div>
+        `;
+      });
+    }
+
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      alert("✅ Đã thêm '" + product.name + "' vào giỏ hàng (giả lập)");
+    }
+
+    searchInput.addEventListener("input", function () {
+      const keyword = this.value.toLowerCase();
+      const filtered = products.filter(p => p.name.toLowerCase().includes(keyword));
+      renderProducts(filtered);
+    });
+
+    // Khởi tạo
+    renderProducts(products);
+  </script>
+
 </body>
 </html>
