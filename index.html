@@ -1,372 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-    <!-- Meta -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="TechTrend Innovations" name="author">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="TechTrend is your one-stop shop for the latest technology products, including smartphones, laptops, smartwatches, and accessories. Discover cutting-edge gadgets with powerful features and seamless shopping experience.">
-    <meta name="keywords" content="technology, smartphones, laptops, smartwatches, gadgets, electronics, online store, responsive, e-commerce">
-
-    <!-- SITE TITLE -->
-    <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
-    <title>TechTrend - Technology Store</title>
-    <meta name="description" content="Latest Technology Products" />
-    <link rel="canonical" href="https://techtrend.com/" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="TechTrend" />
-    <meta property="og:description" content="Latest Technology Products" />
-    <meta property="og:url" content="https://techtrend.com/" />
-    <meta property="og:site_name" content="TechTrend" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <script type="application/ld+json" class="yoast-schema-graph">
-        {
-            "@context": "https://schema.org",
-            "@graph": [
-                {
-                    "@type": "CollectionPage",
-                    "@id": "https://techtrend.com/",
-                    "url": "https://techtrend.com/",
-                    "name": "TechTrend - Technology Store",
-                    "isPartOf": {"@id": "https://techtrend.com/#website"},
-                    "description": "Latest Technology Products",
-                    "breadcrumb": {"@id": "https://techtrend.com/#breadcrumb"},
-                    "inLanguage": "en"
-                },
-                {
-                    "@type": "BreadcrumbList",
-                    "@id": "https://techtrend.com/#breadcrumb",
-                    "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home"}]
-                },
-                {
-                    "@type": "WebSite",
-                    "@id": "https://techtrend.com/#website",
-                    "url": "https://techtrend.com/",
-                    "name": "TechTrend",
-                    "description": "Technology Store",
-                    "potentialAction": [
-                        {
-                            "@type": "SearchAction",
-                            "target": {"@type": "EntryPoint", "urlTemplate": "https://techtrend.com/?s={search_term_string}"},
-                            "query-input": {"@type": "PropertyValueSpecification", "valueRequired": true, "valueName": "search_term_string"}
-                        }
-                    ],
-                    "inLanguage": "en"
-                }
-            ]
-        }
-    </script>
-
-    <!-- CSS (Retained from original, with custom tech styling) -->
-    <link rel="stylesheet" href="https://store3.failoverhosting.com.vn/wp-content/themes/tenten/assets/css/animate.css">
-    <link rel="stylesheet" href="https://store3.failoverhosting.com.vn/wp-content/themes/tenten/assets/bootstrap/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://store3.failoverhosting.com.vn/wp-content/themes/tenten/assets/css/all.min.css">
-    <!-- Add tech-themed custom CSS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopwise</title>
     <style>
-        :root {
-            --primary-color: #0055ff;
-            --secondary-color: #1a1a1a;
-            --accent-color: #00ff88;
+        /* ... existing code ... */
+
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('beach-background.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
         }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f5f7fa;
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('palm-leaves.png');
+            background-size: contain;
+            pointer-events: none;
+            opacity: 0.8;
         }
-        .header_wrap {
-            background-color: var(--secondary-color);
-            color: #fff;
+
+        .hero-title {
+            font-size: 48px;
+            color: #000;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
         }
-        .product_box {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            transition: transform 0.3s;
+
+        .hero-subtitle {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 30px;
+            max-width: 800px;
         }
-        .product_box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+        .cta-button {
+            background-color: #ffeb3b;
+            color: #000;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-        .btn-fill-out {
-            background-color: var(--primary-color);
-            color: #fff;
-            border-radius: 4px;
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
-        .banner_section {
-            background: linear-gradient(135deg, #0055ff, #00ff88);
+
+        .product-showcase {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: flex-end;
+            gap: 20px;
+        }
+
+        .product-showcase img {
+            max-height: 100px;
+            object-fit: contain;
         }
     </style>
-    <!-- Retain other CSS and JS includes (e.g., WooCommerce, Owl Carousel) -->
 </head>
-
 <body>
-    <!-- HEADER -->
-    <header class="header_wrap fixed-top header_with_topbar">
-        <div class="top-header">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <ul class="contact_detail text-center text-lg-left">
-                            <li><i class="ti-mobile"></i><span>+1-800-555-1234</span></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <ul class="header_list text-center text-md-right">
-                            <li><a href="/account">Login</a></li>
-                            <li><a href="/register">Register</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="bottom_header dark_skin main_menu_uppercase">
-            <div class="container">
-                <nav class="navbar navbar-expand-lg">
-                    <a class="navbar-brand" href="/">
-                        <img class="logo_dark" src="/assets/images/techtrend_logo.png" alt="TechTrend Logo" />
-                    </a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-expanded="false">
-                        <span class="ion-android-menu"></span>
-                    </button>
-                    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                        <ul class="navbar-nav">
-                            <li><a class="nav-link nav_item" href="/">Home</a></li>
-                            <li><a class="nav-link nav_item" href="/about">About</a></li>
-                            <li><a class="nav-link nav_item" href="/category/smartphones">Smartphones</a></li>
-                            <li><a class="nav-link nav_item" href="/category/laptops">Laptops</a></li>
-                            <li><a class="nav-link nav_item" href="/category/smartwatches">Smartwatches</a></li>
-                            <li><a class="nav-link nav_item" href="/category/accessories">Accessories</a></li>
-                            <li><a class="nav-link nav_item" href="/blog">Blog</a></li>
-                            <li><a class="nav-link nav_item" href="/contact">Contact</a></li>
-                        </ul>
-                    </div>
-                    <ul class="navbar-nav attr-nav align-items-center">
-                        <li><a href="javascript:void(0);" class="nav-link search_trigger"><i class="linearicons-magnifier"></i></a>
-                            <div class="search_wrap">
-                                <span class="close-search"><i class="ion-ios-close-empty"></i></span>
-                                <form>
-                                    <input type="text" placeholder="Search Gadgets" name="s" class="form-control" id="search_input">
-                                    <button type="submit" class="search_icon"><i class="ion-ios-search-strong"></i></button>
-                                </form>
-                            </div>
-                            <div class="search_overlay"></div>
-                        </li>
-                        <li class="dropdown cart_dropdown"><a class="nav-link cart_trigger" href="/cart" data-toggle="dropdown"><i class="linearicons-cart"></i><span class="cart_count">0</span></a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </header>
-    <!-- END HEADER -->
+    <!-- ... existing code ... -->
 
-    <!-- BANNER SECTION -->
-    <div class="banner_section slide_wrap shop_banner_slider staggered-animation-wrap">
-        <div id="carouselExampleControls" class="carousel slide carousel-fade light_arrow" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active background_bg" data-img-src="/assets/images/banner_tech1.jpg">
-                    <div class="banner_slide_content banner_content_inner">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-8 col-sm-9 col-10">
-                                    <h2>Discover the Latest Smartphones</h2>
-                                    <p>Experience cutting-edge technology with our new arrivals.</p>
-                                    <a href="/category/smartphones" class="btn btn-fill-out">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Add more carousel items for other tech products -->
-            </div>
-            <ol class="carousel-indicators indicators_style2">
-                <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
-                <!-- Add more indicators as needed -->
-            </ol>
+    <section class="hero-section">
+        <h1 class="hero-title">Hè rực rỡ. Săn sale hết cỡ</h1>
+        <p class="hero-subtitle">Chào hè rực rỡ. Mua sắm công nghệ deal xịn hết cỡ<br>
+        Ưu đãi lên đến 70%. Săn hàng, giá tốt nhất.</p>
+        <a href="#products" class="cta-button">Mua ngay</a>
+        <div class="product-showcase">
+            <img src="laptop.png" alt="Laptop">
+            <img src="keyboard.png" alt="Bàn phím">
+            <img src="nintendo.png" alt="Nintendo Switch">
+            <img src="accessories.png" alt="Phụ kiện">
         </div>
-    </div>
-    <!-- END BANNER SECTION -->
-
-    <!-- SHIPPING INFO SECTION -->
-    <div class="section small_pb">
-        <div class="container">
-            <div class="row no-gutters">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="icon_box icon_box_style3">
-                        <div class="icon">
-                            <img src="/assets/images/free_shipping.png" width="46" height="46" alt="Free Shipping">
-                        </div>
-                        <div class="icon_box_content">
-                            <h6>Free Shipping</h6>
-                            <p>Worldwide Delivery</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="icon_box icon_box_style3">
-                        <div class="icon">
-                            <img src="/assets/images/warranty.png" width="46" height="46" alt="Warranty">
-                        </div>
-                        <div class="icon_box_content">
-                            <h6>1-Year Warranty</h6>
-                            <p>Extended Protection</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="icon_box icon_box_style3">
-                        <div class="icon">
-                            <img src="/assets/images/support.png" width="46" height="46" alt="Support">
-                        </div>
-                        <div class="icon_box_content">
-                            <h6>24/7 Support</h6>
-                            <p>Expert Assistance</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="icon_box icon_box_style3">
-                        <div class="icon">
-                            <img src="/assets/images/secure_payment.png" width="46" height="46" alt="Secure Payment">
-                        </div>
-                        <div class="icon_box_content">
-                            <h6>Secure Payment</h6>
-                            <p>Trusted Transactions</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- END SHIPPING INFO SECTION -->
-
-    <!-- FEATURED PRODUCTS SECTION -->
-    <div class="section small_pt pb_20">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="heading_s3 text-center">
-                        <h2>Featured Gadgets</h2>
-                    </div>
-                    <div class="small_divider clearfix"></div>
-                </div>
-            </div>
-            <div class="row shop_container">
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="product_box text-center">
-                        <div class="product_img">
-                            <a href="/product/smartphone-x1">
-                                <img src="/assets/images/smartphone_x1.jpg" alt="Smartphone X1">
-                            </a>
-                            <div class="product_action_box">
-                                <ul class="list_none pr_action_btn">
-                                    <li><a href="#" data-id="1001" class="popup-ajax"><i class="icon-basket-loaded"></i> Buy Now</a></li>
-                                    <li><a href="/product/smartphone-x1"><i class="icon-magnifier-add"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product_info">
-                            <h6 class="product_title"><a href="/product/smartphone-x1">Smartphone X1 Pro</a></h6>
-                            <div class="product_price">
-                                <span class="price">$799.99</span>
-                            </div>
-                            <div class="rating_wrap">
-                                <div class="rating">
-                                    <div class="product_rate" style="width: 80%"></div>
-                                </div>
-                                <span class="rating_num">(120)</span>
-                            </div>
-                            <div class="pr_desc">
-                                <p>Next-gen smartphone with 5G, 128GB storage, and a 6.7" AMOLED display.</p>
-                            </div>
-                            <div class="add-to-cart">
-                                <a href="#" data-id="1001" class="popup-ajax btn btn-fill-out btn-radius"><i class="icon-basket-loaded"></i> Add to Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Add more product items (e.g., Laptop, Smartwatch) following the same structure -->
-            </div>
-        </div>
-    </div>
-    <!-- END FEATURED PRODUCTS SECTION -->
-
-    <!-- FOOTER -->
-    <footer class="footer_dark">
-        <div class="footer_top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 col-sm-12">
-                        <div class="widget">
-                            <h6 class="widget_title">Contact Us</h6>
-                            <ul class="contact_info contact_info_light">
-                                <li><i class="ti-location-pin"></i><p>123 Tech Street, Silicon Valley, CA</p></li>
-                                <li><i class="ti-email"></i><a href="mailto:support@techtrend.com">support@techtrend.com</a></li>
-                                <li><i class="ti-mobile"></i><p>+1-800-555-1234</p></li>
-                            </ul>
-                        </div>
-                        <div class="widget">
-                            <ul class="social_icons rounded_social">
-                                <li><a href="https://facebook.com/" class="sc_facebook"><i class="ion-social-facebook"></i></a></li>
-                                <li><a href="https://twitter.com/" class="sc_twitter"><i class="ion-social-twitter"></i></a></li>
-                                <li><a href="https://youtube.com/" class="sc_youtube"><i class="ion-social-youtube-outline"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-4 col-sm-6">
-                        <div class="widget">
-                            <h6 class="widget_title">Quick Links</h6>
-                            <ul class="widget_links">
-                                <li><a href="/about">About</a></li>
-                                <li><a href="/contact">Contact</a></li>
-                                <li><a href="/faq">FAQ</a></li>
-                                <li><a href="/privacy-policy">Privacy Policy</a></li>
-                                <li><a href="/returns">Returns</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-4 col-sm-6">
-                        <div class="widget">
-                            <h6 class="widget_title">Account</h6>
-                            <ul class="widget_links">
-                                <li><a href="/account">My Account</a></li>
-                                <li><a href="/shop">Shop</a></li>
-                                <li><a href="/cart">Cart</a></li>
-                                <li><a href="/checkout">Checkout</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12 col-sm-12">
-                        <div class="widget">
-                            <h6 class="widget_title">Subscribe to Our Newsletter</h6>
-                            <p>Stay updated with the latest tech deals and product launches!</p>
-                            <div class="newsletter_form rounded_input">
-                                <form class="form_get_notifications">
-                                    <input type="text" required="" name="email_get" class="form-control" placeholder="Enter Your Email">
-                                    <button type="submit" class="btn-send register_get_notifications" name="submit" value="Submit"><i class="icon-envelope-letter"></i></button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="bottom_footer border-top-tran">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-4">
-                        <p class="mb-lg-0 text-center">© 2025 All Rights Reserved by TechTrend Innovations</p>
-                    </div>
-                    <div class="col-lg-4 order-lg-first"></div>
-                    <div class="col-lg-4"></div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- END FOOTER -->
-
-    <!-- Retain all scripts from the original for functionality -->
-    <script src="https://store3.failoverhosting.com.vn/wp-content/themes/tenten/assets/js/jquery-3.6.0.min.js"></script>
-    <!-- Add other scripts as in the original -->
+    </section>
 </body>
 </html>
