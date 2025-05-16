@@ -5,13 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopwise</title>
     <style>
-        /* ... existing code ... */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            color: #000;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+            margin-right: 30px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ff324d;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #ff324d;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .search-cart {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-cart a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .search-cart a:hover {
+            color: #ff324d;
+        }
+
+        .nav-links a.active {
+            color: #ff324d;
+        }
+
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Hero Section Styles */
         .hero-section {
             background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('beach-background.jpg');
             background-size: cover;
             background-position: center;
-            height: 500px;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -19,6 +108,7 @@
             text-align: center;
             padding: 20px;
             position: relative;
+            margin-top: 60px; /* Để tránh bị navbar che mất */
         }
 
         .hero-section::before {
@@ -78,10 +168,46 @@
             max-height: 100px;
             object-fit: contain;
         }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .hero-subtitle {
+                font-size: 18px;
+            }
+
+            .product-showcase {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- ... existing code ... -->
+    <nav class="navbar">
+        <a href="/" class="logo">Shopwise</a>
+        <ul class="nav-links">
+            <li><a href="/trang-chu" class="active">TRANG CHỦ</a></li>
+            <li><a href="/gioi-thieu">GIỚI THIỆU</a></li>
+            <li><a href="/moi">MỚI</a></li>
+            <li><a href="/giay">GIÀY</a></li>
+            <li><a href="/ao-quan">ÁO QUẦN</a></li>
+            <li><a href="/phu-kien">PHỤ KIỆN</a></li>
+            <li><a href="/tin-tuc">TIN TỨC</a></li>
+            <li><a href="/lien-he">LIÊN HỆ</a></li>
+        </ul>
+        <div class="search-cart">
+            <a href="/search">🔍</a>
+            <a href="/cart">🛒</a>
+        </div>
+    </nav>
 
     <section class="hero-section">
         <h1 class="hero-title">Hè rực rỡ. Săn sale hết cỡ</h1>
@@ -95,5 +221,18 @@
             <img src="accessories.png" alt="Phụ kiện">
         </div>
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
